@@ -1,1 +1,0 @@
-# Writing Shadow DOM style rules in seperate CSS files with Vanilla JS (NO frameworks or build tools)

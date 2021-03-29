@@ -1,4 +1,8 @@
 /* These are the Light DOM stylings */
+my-component {
+    --my-component-background: yellow;
+}
+
 
 html {
     font-size: 62.5%;
