@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components Course - Insert Rule Example</title>
+
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./sample-component.js" defer></script>
+</head>
+<body>
+
+    <my-component></my-component>
+
+    <p>
+        [Paragraph outside of the web component.]
+        The underlined text styling of the paragraph tag attached to the Shadow DOM does not apply to the outer paragraph in the Light DOM.
+    </p>
+
+    <template id="myComponentTemplate">
+        <h1>Using the @import at-rule with Web Components</h1>
+        <h2>Writing Shadow DOM style rules in seperate CSS files with Vanilla JS (NO frameworks or build tools)</h2>
+        <p>
+            The global paragraph styling with blue color and bold font weight 
+            does affect the styling of the paragraph inside of the shadow DOM.
+        </p>
+    </template>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+/* These are the Light DOM stylings */
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+p {
+    color: blue;
+    font-weight: bold;
+}
