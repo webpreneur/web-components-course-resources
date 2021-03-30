@@ -1,0 +1,1 @@
+You can reference any .js files from your github repo via [JSDELIVR](https://www.jsdelivr.com/) and after adding the script file to any desired web project you can use the web components defined in the .js file.

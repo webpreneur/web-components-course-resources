@@ -22,7 +22,6 @@ class MyComponent extends HTMLElement {
             li.innerText = item;
             ul.appendChild(li);
         });
-        
     }
 }
 
@@ -36,5 +35,3 @@ myComponentInstance.id = "myId";
 myComponentInstance.listItems = ['Gandalf', 'Legolas', 'Aragorn'];
 
 document.body.appendChild(myComponentInstance);
-
-console.log(myComponentInstance);
