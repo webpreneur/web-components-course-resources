@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetching Web Component template from .html</title>
+    <script type="module" src="./my-component.js" defer></script>
+</head>
+<body>
+    <my-component>
+        <div slot="async">
+            This div is slotted content of the web component template fetched from an .html file
+        </div>
+        <div slot="sync">
+            This div is projected into a slot from an inline (sync) template of the web component.
+        </div>
+    </my-component>
+</body>
+</html>
