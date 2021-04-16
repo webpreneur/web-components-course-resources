@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid Heading Web Component</title>
+</head>
+<body>
+
+    <main>
+
+        <fluid-heading text="This Heading is Fluid" level="1"></fluid-heading>
+
+    </main>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+
+        body {
+            font-family: "Raleway", sans-serif;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+        }
+        fluid-heading {
+            --pref: 7.5vw;
+            --text-align: left;
+        }
+    </style>
+
+
+    <script>
+        class FluidHeading extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: "open" });
+
+                this.shadowRoot.appendChild(this._getStyles());
+            }
+
+            get _level() {
+                return this.getAttribute("level");
+            }
+            get _text() {
+                return this.getAttribute("text");
+            }
+
+            connectedCallback() {
+                this.shadowRoot.appendChild(this._getHeading());
+            }
+
+            _getHeading() {
+                const heading = document.createElement(`h${this._level}`);
+                heading.innerText = this._text;
+                return heading;
+            }
+            _getStyles() {
+                const style = document.createElement("style");
+                style.innerText = `
+                    :host * {
+                        font-weight: unset;
+                    }
+                    :host > * {
+                        font-size: clamp(var(--min, 3rem), var(--pref, 5vw), var(--max, 5rem));
+                        text-align: var(--text-align, center);
+                    }
+                `;
+                return style;
+            }
+        }
+
+        window.customElements.define("fluid-heading", FluidHeading);
+    </script>
+
+</body>
+</html>
