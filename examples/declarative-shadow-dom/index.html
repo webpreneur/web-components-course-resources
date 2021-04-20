@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <h1></h1>
+    </header>
+    <main>
+        <section>
+            <h2>What is it about?</h2>
+            <p>
+                JavaScript may soon no longer be required to create style encapsulation in modern browsers.
+                Chrome shipped Google’s Declarative Shadow DOM proposal.
+                If it becomes a standard, this feature will also make it possible to use Shadow DOM in combination with server-side rendering.
+            </p>
+        </section>
+        <section>
+            <h2>What is the main benefit from it?</h2>
+            <p>
+                SSR - Server Side Rendering
+            </p>
+        </section>
+        <section>
+            <h2>Demo</h2>
+            <!-- To represent multiple lines of code, wrap the <code> element within a <pre> element. -->
+            <pre>
+                <xmp>
+                    <host-element>
+                        <template shadowroot="open">
+                            <style>
+                                /* Some Shadow Root specific stylings */
+                            </style>
+                            <h2>Shadow Content</h2>
+                            <slot></slot>
+                        </template>
+                        <h2>Light content</h2>
+                    </host-element>
+                </xmp>
+            </pre>
+        </section>
+        <section>
+            <h2>References</h2>
+            <ul>
+                <li>
+                    <a href="https://github.com/mfreed7/declarative-shadow-dom">GitHub - Declarative Shadow DOM</a>
+                </li>
+                <li>
+                    <a href="https://web.dev/declarative-shadow-dom/">web.dev - Declarative Shadow DOM</a>
+                </li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>
