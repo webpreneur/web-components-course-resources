@@ -1,0 +1,207 @@
+<h2>Standalone Accordion</h2>
+<h2>Accordion Group</h2>
+
+<awc-accordion summary="Web Components" open>
+  <p>Web components is a set of standards to make self-contained components: custom HTML-elements with their own properties and methods, encapsulated DOM and styles.</p>
+</awc-accordion>
+
+<awc-accordion-group>
+  <awc-accordion summary="Custom Elements">
+    A set of JavaScript APIs that allow you to define custom elements and their behavior, which can then be used as desired in your user interface.
+  </awc-accordion>
+  <awc-accordion summary="Shadow DOM">
+    A set of JavaScript APIs for attaching an encapsulated "shadow" DOM tree to an element — which is rendered separately from the main document DOM — and controlling associated functionality. In this way, you can keep an element's features private, so they can be scripted and styled without the fear of collision with other parts of the document.
+  </awc-accordion>
+  <awc-accordion summary="HTML Templates">
+    The <code>template</code> and <code>slot</code> elements enable you to write markup templates that are not displayed in the rendered page. These can then be reused multiple times as the basis of a custom element's structure.
+  </awc-accordion>
+</awc-accordion-group>
+
+<template id="awcAccordionTemplate">
+  <details>
+    <summary></summary>
+    <p>
+      <slot></slot>
+    </p>
+  </details>
+</template>
+
+
+<style>
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: grid;
+    justify-items: center;
+    grid-template-rows: repeat(2, min-content);
+    grid-template-columns: repeat(2, max-content);
+    height: 100vh;
+    padding: 3rem;
+    gap: 1.5rem;
+}
+
+awc-accordion {
+    --awc-acc-width: 300px;
+}
+</style>
+
+<script>
+
+class AccordionComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.detailsEl = null;
+    this.summaryEl = null;
+    const template = document.getElementById("awcAccordionTemplate");
+    const style = document.createElement("style");
+    style.innerText = `
+      :host {
+        font-family: 'Raleway', sans-serif;
+        display: grid;
+        grid-template-rows: min-content;
+        
+      }
+      details {
+        width: var(--awc-acc-width, 400px);
+        background: #23313f;
+        border-radius: .25rem;
+        color: white;
+      }
+      details > p {
+        padding: .5rem 1rem;
+      }
+      details[open] summary {
+        background: var(--awc-acc-header-bg-open, #324153);
+        color: #44ddb8;
+      }
+      summary {
+        border-radius: inherit;
+        background: var(--awc-acc-header-bg, #3e5264);
+        padding: 1rem;
+        cursor: pointer;
+        font-weight: bold;
+      }
+    `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.appendChild(style);
+  }
+  static get observedAttributes() {
+    return ["expanded", "summary", "disabled"];
+  }
+  getSummary() {
+    return this.getAttribute("summary");
+  }
+  connectedCallback() {
+    const styleSheet = this.shadowRoot.styleSheets[0];
+    styleSheet.insertRule(`
+      @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap')
+    `);
+
+    this.detailsEl = this.shadowRoot.querySelector("details");
+    this.summaryEl = this.shadowRoot.querySelector("summary");
+
+    this._handleToggle();
+    this._updateSummary();
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) {
+      return;
+    }
+    if (name === "summary") {
+      this._updateSummary();
+    }
+    if (name === "expanded") {
+      this.hasAttribute("expanded") ? this.expand() : this.collapse();
+    }
+    if (name === "disabled") {
+      /* TODO: implement */
+    }
+  }
+  collapse() {
+    this.detailsEl.removeAttribute("open");
+  }
+  expand() {
+    this.detailsEl.setAttribute("open", "");
+  }
+  toggle() {
+    /* TODO: implement */
+  }
+  _handleToggle() {
+    this.detailsEl.addEventListener("toggle", this._onToggle);
+  }
+  _onToggle = (event) => {
+    const evt = new CustomEvent("awc:accordion-toggle", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        expanded: this.detailsEl.open
+      }
+    });
+    this.shadowRoot.firstElementChild.dispatchEvent(evt);
+  };
+  _updateSummary() {
+    if (this.summaryEl) {
+      this.summaryEl.innerText = this.getSummary();
+    }
+  }
+}
+window.customElements.define("awc-accordion", AccordionComponent);
+
+
+
+
+class AccordionGroupComponent extends HTMLElement {
+  constructor() {
+    super().attachShadow({ mode: "open" }).innerHTML = `<slot></slot>`;
+    this.accordionEls = [];
+  }
+  static get observedAttributes() {
+    return ["multi"];
+  }
+  connectedCallback() {
+    this._setAccordionEls();
+  }
+  isMulti() {
+    this.getAttribute("multi");
+  }
+  expandAll() {
+    for (const el of this.accordionEls) {
+      el.setAttribute("expanded", "");
+    }
+  }
+  collapseAll() {
+    for (const el of this.accordionEls) {
+      el.removeAttribute("expanded");
+    }
+  }
+  _setAccordionEls() {
+    const assignedEls = this.shadowRoot
+      .querySelector("slot")
+      .assignedElements();
+    this.accordionEls = assignedEls.filter(
+      ({ localName }) => localName === "awc-accordion"
+    );
+    this._handleChildAccordionToggles();
+  }
+  _handleChildAccordionToggles() {
+    for (const el of this.accordionEls) {
+      el.addEventListener(
+        "awc:accordion-toggle",
+        ({ target, detail: { expanded } }) => {
+          if (expanded) {
+            this.collapseAll();
+            target.setAttribute("expanded", "");
+          }
+        }
+      );
+    }
+  }
+}
+window.customElements.define("awc-accordion-group", AccordionGroupComponent);
+
+
+</script>
