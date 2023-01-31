@@ -47,6 +47,13 @@ export class Component extends HTMLElement {
     createStyleEl() {
         return document.createElement('style');
     }
+    /* This is available publicly when selecting the custom element via javascript. */
+    changeStyles(selector, styles) {
+        const el = this.shadowRoot.querySelector(selector);
+        for ( const [property, style] of Object.entries(styles) ) {
+            el.style[property] = style;
+        }
+    }
 
     /* TEMPLATE HANDLING */
     async appendTemplateFromUrl() {
