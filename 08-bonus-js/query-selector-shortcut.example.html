@@ -1,0 +1,17 @@
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ul>
+
+<script>
+    const $ = document.querySelector.bind(document);
+
+    $('ul').style.listStyle = 'none';
+
+    [...$('ul').children].forEach((li, i) => {
+        li.style.color = i % 2 === 0 ? 'red' : 'blue';
+    });
+
+</script>

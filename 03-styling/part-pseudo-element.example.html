@@ -1,0 +1,40 @@
+<style>
+    ::part(sec) {
+        color: blue;
+    }
+    ::part(p) {
+        font-weight: bold;
+    }
+</style>
+
+<template>
+    <div>
+        <p>First paragraph</p>
+        <p part="sec">Second paragraph</p>
+    </div>
+</template>
+
+<part-example></part-example>
+
+<script>
+    window.customElements.define('part-example', class extends HTMLElement {
+        #state = {};
+        get state() {
+            return this.#state;
+        }
+        constructor() {
+            super();
+            this.attachShadow({mode: 'open'});
+            
+            this.shadowRoot.appendChild(
+                document.querySelector('template').content.cloneNode(true)
+            );
+        }
+        patchState(state) {
+            this.#state = {...this.#state, ...state};
+        }
+    });
+
+    const pE = document.querySelector('part-example');
+    console.dir(pE);
+</script>

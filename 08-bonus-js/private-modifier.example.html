@@ -1,0 +1,22 @@
+<script>
+    class PrivateExample {
+        #state = {
+            loading: false,
+        };
+
+        constructor(params) {
+            this.#privateMethod();
+        }
+
+        #privateMethod() {
+            console.log('cannot be called directly from outside');
+        }
+        publicMethod() {
+            this.#privateMethod();
+        }
+    }
+    const pe = new PrivateExample();
+
+    pe.publicMethod(); // works (can be called from outside
+    // pe.#privateMethod(); // throws error (cannot be called from outside
+</script>
